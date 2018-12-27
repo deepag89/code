@@ -1,0 +1,56 @@
+
+class Logger {
+    String name;
+    Level loggerLevel;
+    Config config;
+    info(msg) {
+        this.log(Level.Info, msg);
+    }
+    error(msg) {
+        this.log(Level.Error, msg);
+    }
+    log(level, msg) {
+        if(!Level.isMoreGeneral(this.loggerLevel, level))
+            return;
+        for(appender: config.getAppenders())
+            appender.append(this.name, level, msg)
+    }
+}
+
+enum Level {
+    Fatal,
+    Warning,
+    Error,
+    Info,
+    Debug
+
+    boolean isMoreGeneral(Level curLevel, Level testLevel) {
+        return testLevel <= curLevel;  // For eg. Fatal log should print no matter what the log level is
+    }
+}
+
+class Config {
+    List<Appender> appenders;
+
+    addAppenders();
+    removeAppenders();
+}
+
+interface Appender {
+    void append(loggerName, level, msg);
+    void append(loggerName, msg);
+}
+
+class AbstractAppender {
+    Level level; // Appender level
+}
+
+class ConsoleAppender extends AbstractAppender {
+    void append(loggerName, level, msg) {
+        if(!Level.isMoreGeneral(this.level, level))
+            return;
+        else
+            append(loggerName, msg);
+    }
+}
+
