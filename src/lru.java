@@ -37,13 +37,16 @@ class LRUCache {
 	void set(int key, int value) {
 		Node old = null;
 		Node node = null;
+
+		// get the old node
 		if(keyToNodeMap.containsKey(key)) {
 			old = keyToNodeMap.get(key);
 		}
 		else if(keyToNodeMap.size() == capacity) {
 			old = head;
 		}
-		
+
+		// create/replace old node with new node
 		if(old != null) {
 			removeLinks(old);
 			keyToNodeMap.remove(old.key);
