@@ -37,6 +37,11 @@ public class WordBreak {
         Trie.TrieNode cur = trie.root;
         for (int i=0; i<word.length(); i++) {
             char ch = word.charAt(i);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             if (cur.children[ch - 'a'] == null) {
                return false;
             }
